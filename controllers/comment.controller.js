@@ -1,6 +1,7 @@
 import Comment from "../models/comment.model.js";
 import User from "../models/user.model.js";
 
+// Get comments for a post
 export const getPostComments = async (req, res) => {
   const comments = await Comment.find({ post: req.params.postId })
     .populate("user", "username img")
@@ -9,6 +10,7 @@ export const getPostComments = async (req, res) => {
   res.json(comments);
 };
 
+// Add a comment to a post
 export const addComment = async (req, res) => {
   const clerkUserId = req.auth.userId;
   const postId = req.params.postId;
@@ -30,6 +32,7 @@ export const addComment = async (req, res) => {
   res.status(201).json(savedComment);
 };
 
+// Delete a comment
 export const deleteComment = async (req, res) => {
   const clerkUserId = req.auth.userId;
   const id = req.params.id;
@@ -57,4 +60,15 @@ export const deleteComment = async (req, res) => {
   }
 
   res.status(200).json("Comment deleted");
+};
+
+// Get comment count for a post
+export const getCommentCount = async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const count = await Comment.countDocuments({ post: postId }); // Count comments for the post
+    res.json({ count }); // Return the count as { count: number }
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching comment count", error });
+  }
 };

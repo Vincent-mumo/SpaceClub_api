@@ -1,10 +1,23 @@
-import express from "express"
-import { addComment, deleteComment, getPostComments } from "../controllers/comment.controller.js"
+import express from "express";
+import {
+  addComment,
+  deleteComment,
+  getPostComments,
+  getCommentCount, // Import the new controller
+} from "../controllers/comment.controller.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get("/:postId", getPostComments)
-router.post("/:postId", addComment)
-router.delete("/:id", deleteComment)
+// Get comments for a post
+router.get("/:postId", getPostComments);
 
-export default router 
+// Add a comment to a post
+router.post("/:postId", addComment);
+
+// Delete a comment
+router.delete("/:id", deleteComment);
+
+// Get comment count for a post
+router.get("/:postId/count", getCommentCount); // New route for counting comments
+
+export default router;
